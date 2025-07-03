@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cancer & Leo: Eternal Bond</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Dancing+Script|Montserrat:400,700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%; margin: 0; padding: 0;
+      background: #ffe6f2;
+      color: #d72660;
+      font-family: 'Montserrat', Arial, sans-serif;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      transition: background 0.8s;
+    }
+    .calligraphy {
+      font-family: 'Great Vibes', 'Dancing Script', cursive;
+      letter-spacing: 0.03em;
+    }
+    body {
+      min-height: 100vh;
+    }
+    /* SLIDING PAGES */
+    .pages-container {
+      width: 100vw; height: 100vh;
+      position: relative;
+      overflow: hidden;
+      touch-action: pan-y;
+      background: linear-gradient(135deg,#fff 60%,#ffe6f2 100%);
+      transition: background 0.8s;
+    }
+    .page {
+      width: 100vw; height: 100vh;
+      position: absolute;
+      top: 0; left: 0;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.6s;
+      will-change: transform, opacity;
+      background: transparent;
+      z-index: 1;
+      transform: translateY(100vh);
+    }
+    .page.active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 10;
+      transform: translateY(0);
+      animation: fadeInPage 0.7s;
+    }
+    @keyframes fadeInPage {
+      from { opacity:0; transform: translateY(100vh);}
+      to { opacity:1; transform: translateY(0);}
+    }
+    .caption {
+      margin-top: 36px; font-size: 1.3em; text-align: center; max-width: 90vw;
+      font-family: 'Dancing Script', cursive;
+      color: #d72660;
+      text-shadow: 0 2px 18px #ffb6d5b0;
+    }
+    .nav-btn {
+      background: linear-gradient(90deg,#ffb6d5,#fff 70%);
+      outline: none; border: none; cursor: pointer;
+      margin-top: 50px;
+      font-size: 1.22em; color: #d72660;
+      border-radius: 32px;
+      padding: 16px 38px;
+      font-family: 'Great Vibes', 'Dancing Script', cursive;
+      font-weight: 700;
+      box-shadow: 0 2px 18px #ffb6d5;
+      transition: background 0.18s, transform 0.15s;
+      z-index: 10;
+      display: flex; flex-direction: column; align-items: center;
+      position: relative;
+      letter-spacing: 0.03em;
+      border: 2px solid #fffbe988;
+      animation: btnPulse 1.8s infinite alternate;
+    }
+    @keyframes btnPulse {
+      from { transform:scale(1);}
+      to { transform:scale(1.07);}
+    }
+    /* PAGE 1: CIRCLE IMAGE + BG */
+    .circle-img-container {
+      display: flex; align-items: center; justify-content: center;
+      width: 190px; height: 190px; margin: 40px auto 0 auto;
+      border-radius: 50%; background: linear-gradient(145deg,#ffb6d5 60%,#fff 100%);
+      box-shadow:0 0 30px 8px #ffb6d555,0 6px 36px #fff;
+      overflow: hidden; border: 4px solid #fff;
+      animation: circlePulse 1.6s cubic-bezier(.4,2,.6,1);
+      z-index: 2;
+      position: relative;
+    }
+    @keyframes circlePulse {
+      0% { transform: scale(0.1); opacity:0;}
+      70% { transform: scale(1.1);}
+      100% { transform: scale(1); opacity:1;}
+    }
+    .circle-img {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 2px 16px #d7266044;
+    }
+    /* PAGE 2: ENVELOPE */
+    .envelope-outer {
+      margin-top: 30px;
+      perspective: 700px;
+      width: 240px;
+      height: 160px;
+      position: relative;
+    }
+    .envelope {
+      width: 240px; height: 160px;
+      position: absolute;
+      top: 0; left: 0;
+      z-index: 2;
+    }
+    .env-flap {
+      width: 240px; height: 80px;
+      background: #fff;
+      border-bottom: 3px solid #ffb6d5;
+      position: absolute;
+      top: 0; left: 0;
+      border-radius: 0 0 120px 120px/0 0 80px 80px;
+      z-index: 5;
+      transform-origin: top center;
+      transition: transform 0.8s cubic-bezier(.57,1.66,.35,1.08);
+      box-shadow: 0 6px 18px #ffb6d544;
+      overflow: hidden;
+    }
+    .env-bottom {
+      width: 240px; height: 80px;
+      background: #ffe6f2;
+      position: absolute;
+      top: 80px; left: 0;
+      border-radius: 0 0 30px 30px/0 0 80px 80px;
+      border-top: 2.4px solid #ffb6d5;
+      z-index: 2;
+    }
+    .env-shadow {
+      width: 240px; height: 20px;
+      background: radial-gradient(ellipse at 50% 70%, #ffb6d5 30%, #fff0 100%);
+      position: absolute;
+      top: 155px; left: 0;
+      opacity: 0.4;
+      filter: blur(4px);
+      z-index: 1;
+      border-radius: 0 0 30px 30px/0 0 20px 20px;
+    }
+    .env-flap.open {
+      transform: rotateX(120deg);
+      box-shadow: 0 18px 36px #ffb6d5aa;
+    }
+    .env-stamp {
+      position: absolute;
+      right: 18px; top: 13px;
+      width: 48px; height: 48px;
+      border-radius: 16px 16px 12px 12px;
+      background: linear-gradient(135deg,#ffb6d5 60%,#fff 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px #d7266044;
+      border: 2px solid #fff;
+      font-size: 2em;
+      z-index: 6;
+      transform: rotate(7deg);
+    }
+    .env-butterfly {
+      position: absolute;
+      left: 22px; top: 21px;
+      font-size: 2em;
+      transform: rotate(-14deg);
+      opacity: 0.92;
+      z-index: 6;
+      filter: drop-shadow(0 2px 6px #ffb6d577);
+    }
+    .env-letter {
+      width: 212px; height: 110px;
+      background: #fff;
+      border-radius: 14px 14px 20px 16px;
+      position: absolute;
+      left: 14px; top: 35px;
+      z-index: 4;
+      box-shadow: 0 2px 16px #ffb6d5bb;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity 0.7s;
+      overflow: visible;
+    }
+    .envelope.open .env-letter {
+      opacity: 1;
+      pointer-events: auto;
+      transition-delay: 0.5s;
+    }
+    .env-letter img {
+      width: 56px; height: 56px; object-fit: cover;
+      border-radius: 9px; margin-bottom: 5px;
+      box-shadow: 0 2px 10px #d7266042;
+      border: 2px solid #ffb6d5;
+    }
+    .env-letter-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.08em;
+      color: #d72660;
+      margin-bottom:4px;
+      text-align: center;
+    }
+    .env-sticker {
+      font-size: 1.45em;
+      margin-top: 2px;
+      display: inline-block;
+      animation: stickerPulse 1.8s infinite alternate;
+    }
+    @keyframes stickerPulse {
+      from { transform:scale(1);}
+      to { transform:scale(1.24);}
+    }
+    /* PAGE 3: Dreaming Text + Floating Clouds */
+    .dream-cloud {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.35;
+      z-index: 0;
+      animation: cloudFloat 16s linear infinite;
+    }
+    @keyframes cloudFloat {
+      0% { left: -20vw; }
+      100% { left: 120vw;}
+    }
+    /* PAGE 4: College Image Grid Effects */
+    .college-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px,1fr));
+      gap: 28px 18px;
+      width: 82vw;
+      margin: 44px auto 0 auto;
+      justify-items: center;
+      align-items: center;
+    }
+    .college-img {
+      width: 120px; height: 120px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 3px solid #ffb6d5;
+      box-shadow: 0 4px 18px #d7266066;
+      background: #fff;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.2s;
+      z-index: 1;
+    }
+    .college-img:hover, .college-img.active-anim {
+      transform: scale(1.17) rotate(-3deg);
+      z-index: 2;
+      box-shadow: 0 8px 36px #ffb6d5cc, 0 1.5px 8px #d72660aa;
+      border-color: #d72660;
+      animation: gridPop 0.52s cubic-bezier(.33,1.5,.36,1);
+    }
+    @keyframes gridPop {
+      0% { transform: scale(1) rotate(0deg);}
+      40% { transform: scale(1.24) rotate(9deg);}
+      100% { transform: scale(1.15) rotate(-3deg);}
+    }
+    /* PETALS ANIMATION */
+    .petal-fall {
+      position: fixed;
+      pointer-events: none;
+      z-index: 100;
+      font-size: 2.2em;
+      color: #ffb6d5;
+      opacity: 0.8;
+      animation: petalFall 6s linear forwards;
+    }
+    @keyframes petalFall {
+      0% { top: -8vh; opacity: 0.9; transform: rotate(-10deg);}
+      80% { opacity: 1;}
+      100% { top: 100vh; opacity: 0; transform: rotate(30deg);}
+    }
+    /* PAGE 8: Scrapbook Polaroid Board */
+    .scrap-title {
+      font-size: 1.3em; font-weight: 600; margin-top: 18px; color: #d72660;
+      font-family: 'Great Vibes', cursive;
+    }
+    .scrapbook-board {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 36px 30px;
+      margin: 56px 0 18px 0;
+      max-width: 99vw;
+      min-height: 60vh;
+      position: relative;
+      z-index:2;
+      filter: drop-shadow(0 8px 32px #ffb6d5bb);
+    }
+    .polaroid {
+      width: 140px; min-height: 172px;
+      background: linear-gradient(140deg, #fff 95%, #ffe6f2 100%);
+      border-radius: 18px 16px 32px 22px/14px 22px 24px 24px;
+      padding: 9px 9px 18px 9px;
+      box-shadow: 0 4px 22px #ffb6d5, 0 0px 4px #ffb6d5;
+      display: flex; flex-direction: column; align-items: center;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.18s;
+      border: 2px solid #ffb6d5;
+      margin-bottom: 16px;
+      opacity: 0.97;
+      z-index:2;
+      animation: polaroidFloat 4s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes polaroidFloat {
+      0% { transform: translateY(0);}
+      100% { transform: translateY(-10px);}
+    }
+    .polaroid:hover, .polaroid:focus {
+      transform: scale(1.13) rotate(-1deg);
+      box-shadow: 0 8px 36px #ffb6d5ee, 0 1.5px 8px #d72660bb;
+      opacity: 1;
+      z-index: 3;
+    }
+    .polaroid img {
+      width: 100%; height: 110px; object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px #d7266022;
+      margin-bottom: 7px;
+      border: 1.5px solid #ffb6d5;
+    }
+    .polaroid-label {
+      width: 100%; text-align: center;
+      font-family: 'Dancing Script', cursive;
+      color: #d72660; font-size: 1.12em;
+      margin-top: 3px;
+      text-shadow: 0 2px 14px #ffb6d5bb;
+      letter-spacing: 0.02em;
+    }
+    .scrapbook-string {
+      width: 85vw; height: 18px; background: none;
+      border-top: 3px dashed #ffb6d5;
+      position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+      z-index: 1;
+    }
+    /* Love Letter Modal */
+    .letter-modal { display: none; position: fixed; z-index: 100; top:0; left:0; width:100vw; height:100vh; justify-content: center; align-items: center; background: rgba(255,182,213,0.29); animation: fadeIn 0.8s;}
+    .letter-modal.open { display: flex;}
+    .letter-card {
+      background: linear-gradient(135deg,#fff 85%,#ffe6f2 100%);
+      color: #d72660; border-radius: 24px; padding: 38px 22px 28px 22px;
+      max-width: 90vw; box-shadow: 0 8px 48px #ffb6d5bb;
+      text-align: center; font-size: 1.24em; position: relative;
+      min-width: 260px; min-height: 200px; overflow: hidden;
+      animation: letterOpen 0.9s cubic-bezier(.33,1.5,.36,1);
+      border: 2px solid #ffb6d5;
+    }
+    .close-btn { position: absolute; top: 10px; right: 16px; background: #ffb6d5; border: none; border-radius: 50%; width: 36px; height: 36px; color: #fff; font-size: 1.4em; cursor: pointer; box-shadow: 0 2px 6px #d7266022; transition: background 0.2s;}
+    .close-btn:hover { background: #d72660; }
+    .letter-card .calligraphy { font-size:1.28em; color:#d72660; }
+    .hearts-area { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none; z-index: 2;}
+    .heart { position: absolute; font-size: 2em; opacity: 0.7; animation: floatHeart 2.8s linear forwards; color: #ffb6d5; filter: drop-shadow(0 0 8px #ffb6d5);}
+    audio { display: none; }
+    @media (max-width: 600px) {
+      .dream-img, .polaroid img, .college-img { width: 90px; height: 70px;}
+      .college-grid, .scrapbook-board { gap:14px 12px;}
+      .polaroid { width: 90px; min-height: 105px;}
+      .letter-card { padding: 12px 4px 8px 4px; min-width: 160px;}
+    }
+  </style>
+</head>
+<body>
+  <audio id="bg-music" src="https://files.catbox.moe/qo3n3e.mp3" loop></audio>
+  <div class="pages-container" id="pages-container">
+    <!-- PAGE 1: Starry Night, Image in Circle -->
+    <div class="page active" id="page1">
+      <canvas id="stars-canvas"></canvas>
+      <div class="circle-img-container">
+        <img class="circle-img" src="https://i.ibb.co/1G5FWLMK/IMG-2256.jpg" alt="Couple" />
+        <span id="star-center" class="star-center">⭐</span>
+      </div>
+      <div class="caption calligraphy">Written in the stars, our journey is eternal...</div>
+      <button class="nav-btn" id="star-btn" style="display:none;">Tap to continue</button>
+    </div>
+    <!-- PAGE 2: ENVELOPE ANIMATION -->
+    <div class="page" id="page2">
+      <div class="envelope-outer" id="envelope-outer">
+        <div class="envelope" id="envelope">
+          <div class="env-flap" id="env-flap"></div>
+          <div class="env-bottom"></div>
+          <div class="env-shadow"></div>
+          <div class="env-stamp">💌</div>
+          <div class="env-butterfly">🦋</div>
+          <div class="env-letter" id="env-letter">
+            <img src="https://i.ibb.co/G47Wzv8/IMG-8588.jpg" alt="Mini" />
+            <div class="env-letter-text">Every love letter is a memory of us.<br><span class="env-sticker">💞</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="caption calligraphy">A letter from the universe... Tap envelope to open</div>
+      <button class="nav-btn" id="to3" style="display:none;">Next</button>
+    </div>
+    <!-- PAGE 3: Dreaming Text + Floating Clouds -->
+    <div class="page" id="page3">
+      <div class="dream-cloud" style="top:40vh; left:-20vw; font-size:7em;">☁️</div>
+      <div class="dream-cloud" style="top:60vh; left:-10vw; font-size:5em;">☁️</div>
+      <div class="dream-cloud" style="top:20vh; left:-18vw; font-size:4em;">☁️</div>
+      <div class="caption calligraphy">My soul remembers you from every dream and every life. <br>
+      In every dream, it was always you.</div>
+      <button class="nav-btn" id="to4">Continue</button>
+    </div>
+    <!-- PAGE 4: College Image Grid + Tapping Animations -->
+    <div class="page" id="page4">
+      <div class="caption calligraphy">Our college moments, destined through time...</div>
+      <div class="college-grid" id="college-grid"></div>
+      <button class="nav-btn" id="to5">Next</button>
+    </div>
+    <!-- PAGE 5: Infinity & Heart -->
+    <div class="page" id="page5">
+      <div class="infinity-wrap">
+        <div class="infinity-sign calligraphy">&#8734;</div>
+        <div class="heart-center">💞</div>
+        <div class="love-petals" id="love-petals"></div>
+      </div>
+      <div class="caption calligraphy">
+        Our love is infinite, looping through every lifetime, always finding each other.
+      </div>
+      <button class="nav-btn" id="to6">Continue</button>
+    </div>
+    <!-- PAGE 6: Dreaming Letters Gallery + Sparkles -->
+    <div class="page" id="page6">
+      <div class="caption calligraphy">Letters from our dreams...</div>
+      <div class="dream-letter-gallery" id="dream-letter-gallery"></div>
+      <button class="nav-btn" id="to7">Next</button>
+    </div>
+    <!-- PAGE 7: Dream Collage -->
+    <div class="page" id="page7">
+      <div class="caption calligraphy">Our love through every dream and every life.</div>
+      <div class="dream-collage-grid" id="dream-collage-grid"></div>
+      <button class="nav-btn" id="to8">Scrapbook & Forever</button>
+    </div>
+    <!-- PAGE 8: Scrapbook with Polaroid Style -->
+    <div class="page" id="page8">
+      <div class="scrap-title">Our Scrapbook of Love</div>
+      <div class="scrapbook-string"></div>
+      <div class="scrapbook-board" id="scrapbook-board"></div>
+      <div class="caption calligraphy">Tap a polaroid to read a love letter…</div>
+      <div class="letter-modal" id="letter-modal">
+        <div class="letter-card" id="letter-card">
+          <button class="close-btn" id="close-letter">&times;</button>
+          <div id="letter-text"></div>
+          <div class="hearts-area" id="hearts-area"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // --- BG MUSIC FIX FOR MOBILE ---
+    const bgMusic = document.getElementById('bg-music');
+    let musicStarted = false;
+    function playBGMusic() {
+      if (!musicStarted) {
+        bgMusic.volume = 0.6;
+        bgMusic.play().catch(()=>{});
+        musicStarted = true;
+      }
+    }
+    window.addEventListener('click', playBGMusic);
+    window.addEventListener('touchstart', playBGMusic);
+
+    // PAGE SLIDER
+    let currentPage = 1, totalPages = 8, sliding = false;
+    function showPage(n,dir=1) {
+      if (sliding || n < 1 || n > totalPages || n === currentPage) return;
+      sliding = true;
+      const pages = document.querySelectorAll('.page');
+      let prev = currentPage-1, next = n-1;
+      pages[prev].classList.remove('active');
+      setTimeout(()=>{
+        pages[next].classList.add('active');
+        sliding = false;
+      },100);
+      currentPage=n;
+    }
+    // Mouse/touch swipe for vertical slide
+    let startY = null;
+    document.getElementById('pages-container').addEventListener('touchstart', e => {
+      if (e.touches.length === 1) startY = e.touches[0].clientY;
+    });
+    document.getElementById('pages-container').addEventListener('touchend', e => {
+      if (startY !== null) {
+        let endY = e.changedTouches[0].clientY;
+        if (endY - startY > 80) showPage(currentPage-1); // slide down
+        else if (startY - endY > 80) showPage(currentPage+1); // slide up
+        startY = null;
+      }
+    });
+    // Also allow up/down arrow navigation
+    window.addEventListener('keydown', e=>{
+      if (e.key==="ArrowDown"||e.key==="PageDown") showPage(currentPage+1);
+      if (e.key==="ArrowUp"||e.key==="PageUp") showPage(currentPage-1);
+    });
+
+    // PAGE 1: Stars, Circle Image, BG
+    const canvas = document.getElementById('stars-canvas');
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight;}
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    for(let i=0;i<90;i++) { stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.5+0.4, o: Math.random()*0.5+0.5 }); }
+    function drawStars() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(const s of stars) {
+        ctx.globalAlpha = s.o;
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle = "#ffb6d5"; ctx.fill();
+      }
+    }
+    drawStars();
+    setTimeout(() => {
+      let cx = canvas.width/2, cy = canvas.height/2;
+      let sx = stars[0].x, sy = stars[0].y;
+      let grow = 0.8;
+      let anim = setInterval(()=>{
+        sx += (cx - sx) * 0.13;
+        sy += (cy - sy) * 0.13;
+        grow += 0.11;
+        drawStars();
+        ctx.globalAlpha = 1;
+        ctx.beginPath();
+        ctx.arc(sx,sy,18*grow,0,Math.PI*2);
+        ctx.fillStyle = "#fff";
+        ctx.shadowBlur = 22;
+        ctx.shadowColor = "#ffb6d5";
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }, 30);
+      setTimeout(() => {
+        clearInterval(anim);
+        document.getElementById('star-btn').style.display = '';
+        // Falling petals
+        setInterval(()=>spawnPetal(), 600);
+      }, 1800);
+    }, 1200);
+    document.getElementById('star-btn').onclick = function(){
+      showPage(2,1); playBGMusic();
+    };
+
+    // PAGE 2: Envelope animation
+    let envelopeOpened = false;
+    document.getElementById('envelope-outer').onclick = function(){
+      if (envelopeOpened) return;
+      envelopeOpened=true;
+      let flap = document.getElementById('env-flap'), env = document.getElementById('envelope');
+      flap.classList.add('open');
+      env.classList.add('open');
+      setTimeout(()=>{
+        document.getElementById('to3').style.display='';
+      },1200);
+    }
+    document.getElementById('to3').onclick = function(){ showPage(3,1); };
+
+    // PAGE 3: Dreaming Clouds
+    document.getElementById('to4').onclick = function(){ showPage(4,1); };
+
+    // PAGE 4: College Image Grid + On-tap Animations
+    const collegeGrid = document.getElementById('college-grid');
+    const collegeImgs = [
+      "https://i.ibb.co/G47Wzv8/IMG-8588.jpg",
+      "https://i.ibb.co/wZvmRC2C/IMG-8843.jpg",
+      "https://i.ibb.co/jvbkPVcB/IMG-2264.jpg",
+      "https://i.ibb.co/4nTPpmZQ/IMG-2254.jpg",
+      "https://i.ibb.co/tp6zJsDj/IMG-3682.jpg",
+      "https://i.ibb.co/7Jcmj22X/IMG-3716.jpg",
+      "https://i.ibb.co/fGX91P8H/IMG-3713.jpg",
+      "https://i.ibb.co/Fb83nb9Q/IMG-3718.jpg"
+    ];
+    collegeImgs.forEach((src,i)=>{
+      const img=document.createElement('img');
+      img.src=src; img.className="college-img"; img.alt="College Memory "+(i+1);
+      img.onclick=()=>{
+        img.classList.add("active-anim");
+        // Add hearts effect
+        for(let j=0;j<3;j++){
+          setTimeout(()=>{
+            let fh = document.createElement('span');
+            fh.className = "floating-heart";
+            fh.textContent = ['💖','💗','💞','💓'][Math.floor(Math.random()*4)];
+            fh.style.left = (10+Math.random()*80)+"vw";
+            img.parentNode.appendChild(fh);
+            setTimeout(()=>fh.remove(),3500);
+          }, j*200);
+        }
+        setTimeout(()=>img.classList.remove("active-anim"),1200);
+      };
+      collegeGrid.appendChild(img);
+    });
+    document.getElementById('to5').onclick = function(){ showPage(5,1); };
+
+    // PAGE 5: Infinity & heart - animated petals
+    function startPetals() {
+      const area = document.getElementById('love-petals');
+      let petalTimer = setInterval(()=>{
+        let p = document.createElement('span');
+        p.className = 'petal';
+        p.textContent = ['💖','💗','💞','💓'][Math.floor(Math.random()*4)];
+        p.style.left = (16+Math.random()*68)+'vw';
+        p.style.bottom = '-42px';
+        p.style.fontSize = (1.8+Math.random()*1.7)+'em';
+        p.style.opacity = (0.6+Math.random()*0.35);
+        area.appendChild(p);
+        setTimeout(()=>p.remove(), 2900);
+      }, 420);
+      document.getElementById('to6').onclick = function() {
+        clearInterval(petalTimer);
+        showPage(6,1);
+      };
+    }
+    document.getElementById('to5').onclick = function(){ showPage(5,1); startPetals(); };
+
+    // PAGE 6: Dreaming Letters Gallery
+    const dreamLetterGallery = document.getElementById('dream-letter-gallery');
+    const dreamyLetters = [
+      "If time is a river, my love for you is the current that flows through every age.",
+      "In every dream, it's your eyes that find me, your touch that wakes my heart.",
+      "Somewhere, in a thousand lifetimes, we promised to find each other again.",
+      "Our story is written in the moonlight, a love as old as the stars.",
+      "You are my wish upon every falling star, my forever in every dream."
+    ];
+    dreamyLetters.forEach((text,i)=>{
+      let card=document.createElement('div');
+      card.className="dream-letter-card2";
+      card.innerHTML=text;
+      dreamLetterGallery.appendChild(card);
+    });
+    document.getElementById('to7').onclick = function(){ showPage(7,1); };
+
+    // PAGE 7: Dream Collage Grid
+    const collageGrid = document.getElementById('dream-collage-grid');
+    const collageImgs = [
+      "https://i.ibb.co/0j2DPCmH/IMG-8587.jpg",
+      "https://i.ibb.co/G47Wzv8/IMG-8588.jpg",
+      "https://i.ibb.co/wZvmRC2C/IMG-8843.jpg",
+      "https://i.ibb.co/jvbkPVcB/IMG-2264.jpg",
+      "https://i.ibb.co/Q367r5tW/IMG-2255.jpg",
+      "https://i.ibb.co/4nTPpmZQ/IMG-2254.jpg",
+      "https://i.ibb.co/jvrMb9FH/IMG-2263.jpg",
+      "https://i.ibb.co/VWfMhxCS/IMG-2259.jpg",
+      "https://i.ibb.co/HD2bK0Vv/IMG-2265.jpg",
+      "https://i.ibb.co/5WRx6YDq/IMG-2266.jpg",
+      "https://i.ibb.co/npc9JH6/IMG-3721.jpg",
+      "https://i.ibb.co/355SRZ0Z/74022-DD7-8-A77-499-B-AD48-B434418-A07-DF.png",
+      "https://i.ibb.co/CKhgtwML/IMG-3722.jpg",
+      "https://i.ibb.co/KpsGm4vX/IMG-3719.jpg",
+      "https://i.ibb.co/WvTJngyF/IMG-3728.jpg"
+    ];
+    collageImgs.forEach((src,i)=>{
+      const img=document.createElement('img');
+      img.src=src; img.className="dream-collage-img"; img.alt="Dream Collage "+(i+1);
+      collageGrid.appendChild(img);
+    });
+    document.getElementById('to8').onclick = function(){ showPage(8,1); };
+
+    // PAGE 8: Scrapbook Polaroid
+    const scrapbook = [
+      {
+        img: "https://i.ibb.co/1G5FWLMK/IMG-2256.jpg",
+        label: "The First Glance",
+        letter: "<span class='calligraphy'>My dearest love,</span><br>With every glance, my heart remembers a thousand lifetimes we’ve spent together. I feel so blessed to have found you again in this one.<br><br><span class='calligraphy'>Forever yours, in every birth.</span>"
+      },
+      {
+        img: "https://i.ibb.co/vCZQ92Wg/IMG-4083.jpg",
+        label: "Our Cosmic Embrace",
+        letter: "You are my sun and my moon, my Cancer soul wrapped around my fierce Leo. We shine brightest together, painting the universe with our love."
+      },
+      {
+        img: "https://i.ibb.co/DPwKfwVL/IMG-2258.jpg",
+        label: "Infinite Memories",
+        letter: "Every memory with you is a star in our sky. Some nights I count them and realize—our love is infinite."
+      },
+      {
+        img: "https://i.ibb.co/HD2bK0Vv/IMG-2265.jpg",
+        label: "Love Always",
+        letter: "I love you more with every moment, with every universe, with every heartbeat. Thank you for being my always."
+      },
+      {
+        img: "https://i.ibb.co/Fb83nb9Q/IMG-3718.jpg",
+        label: "Written in the Stars",
+        letter: "No distance, no time, no fate could ever keep us apart. Our bond is written in the stars and sealed by our hearts."
+      },
+      {
+        img: "https://i.ibb.co/355SRZ0Z/74022-DD7-8-A77-499-B-AD48-B434418-A07-DF.png",
+        label: "Infinity",
+        letter: "Our love, like the infinity sign, loops through every lifetime. With you, forever is just the beginning."
+      }
+    ];
+    const board = document.getElementById('scrapbook-board');
+    scrapbook.forEach((item, i) => {
+      const polaroid = document.createElement('div');
+      polaroid.className = "polaroid";
+      const img = document.createElement('img');
+      img.src = item.img;
+      img.alt = item.label;
+      polaroid.appendChild(img);
+      const label = document.createElement('div');
+      label.className = "polaroid-label";
+      label.innerHTML = item.label;
+      polaroid.appendChild(label);
+      polaroid.addEventListener('click', () => openLetter(i));
+      board.appendChild(polaroid);
+    });
+    const modal = document.getElementById('letter-modal');
+    const letterText = document.getElementById('letter-text');
+    const heartsArea = document.getElementById('hearts-area');
+    let heartTimer = null;
+    function openLetter(idx) {
+      letterText.innerHTML = scrapbook[idx].letter;
+      modal.classList.add('open');
+      startHearts();
+    }
+    document.getElementById('close-letter').onclick = closeLetter;
+    function closeLetter() {
+      modal.classList.remove('open');
+      stopHearts();
+    }
+    function random(min, max) { return Math.random() * (max-min) + min; }
+    function spawnHeart() {
+      const heart = document.createElement('span');
+      heart.className = 'heart';
+      heart.textContent = ['💖','💗','💞','💓'][Math.floor(Math.random()*4)];
+      heart.style.left = random(10, 80) + '%';
+      heart.style.bottom = '-36px';
+      heart.style.fontSize = random(1.3, 2.2) + 'em';
+      heart.style.opacity = random(0.6, 0.95);
+      heartsArea.appendChild(heart);
+      setTimeout(() => heart.remove(), 2800);
+    }
+    function startHearts() {
+      if (heartTimer) return;
+      spawnHeart();
+      heartTimer = setInterval(spawnHeart, 650);
+    }
+    function stopHearts() {
+      clearInterval(heartTimer);
+      heartTimer = null;
+      heartsArea.innerHTML = '';
+    }
+    modal.addEventListener('click', e => { if (e.target === modal) closeLetter(); });
+    document.addEventListener('keydown', e => {
+      if (modal.classList.contains('open') && e.key === 'Escape') closeLetter();
+    });
+
+    // Falling petals animation (all pages)
+    function spawnPetal() {
+      const p = document.createElement('span');
+      p.className = "petal-fall";
+      p.textContent = ["🌸","💮","🌷","🌺"][Math.floor(Math.random()*4)];
+      p.style.left = Math.random()*98+"vw";
+      p.style.top = "-8vh";
+      p.style.fontSize = (1.8+Math.random()*1.7)+'em';
+      p.style.opacity = (0.6+Math.random()*0.35);
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(),6000);
+    }
+    setInterval(()=>spawnPetal(), 1200);
+
+    // Auto play music on interaction for iOS/Safari
+    window.addEventListener('touchend', playBGMusic, {once:true});
+    window.addEventListener('mousedown', playBGMusic, {once:true});
+  </script>
+</body>
+</html>
